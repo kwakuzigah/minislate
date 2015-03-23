@@ -342,6 +342,15 @@ var Editor = Class(Object, {
         return selection.getSurroundingNodes(filter);
     },
 
+    getSurroundingNodes: function(filter) {
+        var selection = this.getSelection();
+        if (selection.rangeCount !== 1) {
+            return [];
+        }
+
+        return selection.getSurroundingNodes(filter);
+    },
+
     filterTopNodeNames: function() {
         var names = _.map(arguments, function(v) {
             return v.toLowerCase();
@@ -414,5 +423,29 @@ exports.simpleEditor = Class(Editor, {
         this.toolbar.addControl(controls.inline.Link, 'link');
         this.toolbar.addControl(controls.media.Image, 'image');
         this.toolbar.addControl(controls.media.Oembed, 'oembed');
+    }
+});
+
+
+exports.oneLineEditor = Class(Editor, {
+    init: function() {
+        Editor.prototype.init.apply(this, arguments);
+
+        this.toolbar.addControl(controls.Menu, 'blocks', {
+            label: '¶',
+            title: 'Blocks',
+            controls: [
+                [controls.block.H1, 'h1'],
+                [controls.block.H2, 'h2'],
+                [controls.block.H3, 'h3'],
+                [controls.block.H4, 'h4'],
+                [controls.block.H5, 'h5'],
+                [controls.block.H6, 'h6']
+            ]
+        });
+        this.toolbar.addControl(controls.block.Bold, 'bold');
+        this.toolbar.addControl(controls.inline.Italic, 'italic');
+        this.toolbar.addControl(controls.inline.Underline, 'underline');
+        this.toolbar.addControl(controls.inline.StrikeThrough, 'strike');
     }
 });

@@ -19,3 +19,4 @@ exports.HtmlCleaner = require('./lib/html-cleaner').HtmlCleaner;
 exports.Editor = require('./lib/editor').Editor;
 exports.controls = require('./lib/editor').controls;
 exports.simpleEditor = require('./lib/editor').simpleEditor;
+exports.oneLineEditor = require('./lib/editor').oneLineEditor;

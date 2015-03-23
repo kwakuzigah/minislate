@@ -44,6 +44,14 @@ var Block = Class(Button, {
                 }
             }
             this.toolbar.editor.exec(this.command, '<' + this.tag + '>');
+        } else if (this.command === 'bold') {
+            if (!this.isHighlighted()) {
+                topNodes = editor.filterTopNodeNames.apply(editor, this.BLOCK_NODES);
+                if (topNodes.length > 0) {
+                    editor.setRange(topNodes[0]);
+                }
+            }
+            this.toolbar.editor.exec(this.command, '<' + this.tag + '>');
         } else {
             this.toolbar.editor.exec(this.command);
         }
@@ -117,6 +125,31 @@ exports.Preformated = Class(Block, {
     }
 });
 
+
+exports.Bold = Class(Block, {
+    defaults: extend({}, Block.prototype.defaults, {
+        label: 'B',
+        title: 'Bold',
+        fontAwesomeID: 'bold'
+    }),
+    tagList: ['b', 'strong'],
+    command: 'bold',
+
+    init: function() {
+        Block.prototype.init.apply(this, arguments);
+
+        // Allow bold with Cmd+b or Ctrl+b
+        var self = this,
+            editor = this.toolbar.editor;
+
+        editor.on('keydown', function(evt) {
+            if (evt.which === 66 && (evt.ctrlKey || evt.metaKey)) {
+                evt.preventDefault();
+                self.click();
+            }
+        });
+    }
+});
 
 // Lists
 var BaseList = Class(Block, {
